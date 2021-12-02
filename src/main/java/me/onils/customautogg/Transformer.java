@@ -24,7 +24,32 @@ public class Transformer implements ClassFileTransformer {
             return new byte[0];
         }
 
+        if(className.startsWith("lunar/")){
+            ClassReader cr = new ClassReader(classfileBuffer);
+            if(cr.getSuperName().startsWith("lunar/") && cr.getInterfaces().length == 1){
+                ClassNode cn = new ClassNode();
 
+                cr.accept(cn, 0);
+
+                outer:
+                for(MethodNode method : cn.methods){
+                    for(AbstractInsnNode insn : method.instructions){
+                        if(insn.getOpcode() == Opcodes.LDC){
+                            LdcInsnNode ldc = (LdcInsnNode) insn;
+                            if("/achat gg".equals(ldc.cst)){
+                                ldc.cst = "/achat " + ggMessage;
+                                break outer;
+                            }
+                        }
+                    }
+                }
+
+                ClassWriter cw = new ClassWriter(cr, 0);
+                cn.accept(cw);
+
+                return cw.toByteArray();
+            }
+        }
         return classfileBuffer;
     }
 }
