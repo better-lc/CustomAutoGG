@@ -8,14 +8,13 @@ import org.objectweb.asm.tree.*;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Transformer implements ClassFileTransformer {
     String ggMessage;
-    Transformer(String ggMsg){
+    String levelHeadMessage;
+    Transformer(String ggMsg, String levelHeadMessage){
         this.ggMessage = ggMsg;
+        this.levelHeadMessage = levelHeadMessage;
     }
 
     @Override
@@ -31,14 +30,14 @@ public class Transformer implements ClassFileTransformer {
 
                 cr.accept(cn, 0);
 
-                outer:
                 for(MethodNode method : cn.methods){
                     for(AbstractInsnNode insn : method.instructions){
                         if(insn.getOpcode() == Opcodes.LDC){
                             LdcInsnNode ldc = (LdcInsnNode) insn;
                             if("/achat gg".equals(ldc.cst)){
                                 ldc.cst = "/achat " + ggMessage;
-                                break outer;
+                            }else if("Level: ".equals(ldc.cst)){
+                                ldc.cst = levelHeadMessage;
                             }
                         }
                     }
