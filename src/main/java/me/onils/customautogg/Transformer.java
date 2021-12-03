@@ -32,7 +32,7 @@ public class Transformer implements ClassFileTransformer {
                             @Override
                             public void visitLdcInsn(Object value) {
                                 if("/achat gg".equals(value))
-                                    super.visitLdcInsn(ggMessage);
+                                    super.visitLdcInsn("/achat " + ggMessage);
                                 else
                                     super.visitLdcInsn(value);
                             }
