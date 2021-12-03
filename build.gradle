@@ -6,7 +6,7 @@ plugins {
 sourceCompatibility = 16
 targetCompatibility = 16
 
-group 'me.onils.customautogg'
+group 'me.onils'
 version '1.0'
 
 repositories {

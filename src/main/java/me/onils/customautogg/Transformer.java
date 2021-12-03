@@ -33,7 +33,8 @@ public class Transformer implements ClassFileTransformer {
                             public void visitLdcInsn(Object value) {
                                 if("/achat gg".equals(value))
                                     super.visitLdcInsn(ggMessage);
-                                super.visitLdcInsn(value);
+                                else
+                                    super.visitLdcInsn(value);
                             }
                         };
                     }
